@@ -3,7 +3,8 @@ import numpy as np
 
 capture = cv2.VideoCapture(0)
 wh_target = 416
-confidence_threshold = 0.5
+confidence_threshold = 0.8
+nms_threshold = 0.3
 
 class_file = 'class.names'
 class_names = []
@@ -11,18 +12,21 @@ class_names = []
 with open(class_file, 'rt') as f:
     class_names = f.read().rstrip('\n').split('\n')
 
+
+#model_config = 'yolov3-tiny.cfg'
+#model_weights = 'yolov3-tiny.weights'
+
 model_config = 'yolov3.cfg'
 model_weights = 'yolov3.weights'
 
 network = cv2.dnn.readNetFromDarknet(model_config, model_weights)
 
-# use cpu for network
 network.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 network.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
 def find_objects(outputs, img):
     hT, wT, cT = img.shape
-    box = []
+    bounding_box = []
     class_ids = []
     confidence_values = []
 
@@ -34,13 +38,19 @@ def find_objects(outputs, img):
             if confidence > confidence_threshold:
                 width, height = int(detection[2] * wT), int(detection[3] * hT)
                 x, y = int(detection[0] * wT - width/2), int(detection[1] * hT - height/2)
-                box.append([x, y, width, height])
+                bounding_box.append([x, y, width, height])
                 class_ids.append(class_id)
                 confidence_values.append(float(confidence))
 
-    # tells us how many detected items are present
-    print(len(box))
+    indices = cv2.dnn.NMSBoxes(bounding_box, confidence_values, confidence_threshold, nms_threshold)
 
+    for i in indices:
+        i = i[0]
+        box = bounding_box[i]
+        x, y, w, h = box[0], box[1], box[2], box[3]
+        cv2.rectangle(img, (x, y), (x + w, y + h), (100, 100, 255), 2)
+        cv2.putText(img, f'{class_names[class_ids[i]]} {int(confidence_values[i] * 100)}%',
+                    (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (100,100,255), 2)
 
 while True:
     success, img = capture.read()
