@@ -18,7 +18,7 @@ How do I display objects with lower confidence percentages?
 ```python
 confidence_threshold = 0.8 # alter this value where 0.8 is 80%
 ```
-How do I use my gpu?
+How do I use my GPU?
 ```python
 # uncomment these
 #network.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
