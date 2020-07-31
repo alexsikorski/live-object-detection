@@ -24,5 +24,13 @@ How do I use my GPU?
 #network.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 #network.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 ```
+I want to use different YOLO weights and cfg.
+```python
+# change this value to the respective width, height target
+wh_target = 320 # for example for the YOLO V3 320 files
+# also change these to the appropriate files
+model_config = 'yolov3.cfg'
+model_weights = 'yolov3.weights'
+```
 ## Result
 ![Detecting a mobile phone and a person](screenshots/cell%20phone.png)
