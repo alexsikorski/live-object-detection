@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 capture = cv2.VideoCapture(0)
-wh_target = 416
+wh_target = 320
 confidence_threshold = 0.8
 nms_threshold = 0.3
 
@@ -16,7 +16,7 @@ with open(class_file, 'rt') as f:
 #model_config = 'yolov3-tiny.cfg'
 #model_weights = 'yolov3-tiny.weights'
 
-# 416 weights (lower frame rate, higher accuracies)
+# using more trained weights (lower frame rate, higher accuracies)
 model_config = 'yolov3.cfg'
 model_weights = 'yolov3.weights'
 
