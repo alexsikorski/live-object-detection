@@ -33,4 +33,4 @@ model_config = 'yolov3.cfg'
 model_weights = 'yolov3.weights'
 ```
 ## Result
-![Detecting a mobile phone and a person](screenshots/cell%20phone.png)
+![Detecting a mobile phone and a person](https://alexsikorski.net/img/live-object-detection/detection.jpg)
